@@ -8,10 +8,11 @@ export class ReelConfig implements IReelConfig {
 
 	public position: IPoint = { x: this.reelBorderX, y: 120 };
 
-	protected reelWidth: number = this.mainConfig.width - this.reelBorderX * 2;
+	public reelSize: IPoint = this.getReelSize();
+
 	public reelStripAmount: number = 4;
 
-	public symbolWidthMax: number = this.reelWidth / this.reelStripAmount;
+	public symbolWidthMax: number = this.reelSize.x / this.reelStripAmount;
 
 	protected symbolConfig: ISymbolConfig = {
 		width: 70
@@ -22,16 +23,22 @@ export class ReelConfig implements IReelConfig {
 			to: { y: this.symbolConfig.width },
 			duration: 100
 		},
-		stripInterval: ( this.reelWidth - this.symbolConfig.width * this.reelStripAmount ) / ( this.reelStripAmount - 1 ),
+		stripInterval: ( this.reelSize.x - this.symbolConfig.width * this.reelStripAmount ) / ( this.reelStripAmount - 1 ),
 		symbolConfig: this.symbolConfig,
 		symbolPerStrip: 3,
 		symbolOnTop: 1,
 		symbolBelowBottom: 1
 	};
+
+	protected getReelSize (): IPoint {
+		const width = this.mainConfig.width - this.reelBorderX * 2;
+		return { x: width, y: width };
+	}
 }
 
 export interface IReelConfig {
 	position: IPoint;
+	reelSize: IPoint;
 	reelStrip: IReelStripConfig;
 	reelStripAmount: number;
 	symbolWidthMax: number;

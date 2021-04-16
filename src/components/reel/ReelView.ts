@@ -25,6 +25,12 @@ export class ReelView extends PIXI.Container {
 		this.reelStripsContainer.position.set( this.config.position.x, this.config.position.y );
 		this.addChild( this.reelStripsContainer );
 
+		const reelMask: PIXI.Graphics = new PIXI.Graphics();
+		reelMask.beginFill( 0xFF0000 );
+		reelMask.drawRect( this.config.position.x, this.config.position.y, this.config.reelSize.x, this.config.reelSize.y );
+		reelMask.endFill();
+		this.reelStripsContainer.mask = reelMask;
+
 		this.reelStrips = new Array<ReelStrip>();
 		for ( let i: number = 0; i < this.config.reelStripAmount; i++ ) {
 			const reelStrip = new ReelStrip( this.config.reelStrip );
