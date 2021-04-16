@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import * as TWEEN from '@tweenjs/tween.js';
 window.PIXI = PIXI;
 import './style.css';
 import { IMainConfig, MainConfig } from 'src/config/MainConfig';
@@ -23,6 +24,15 @@ export class GmaeApplication {
 		document.title = this.appConfig.title;
 		document.body.style.overflow = 'hidden';
 		this.createElements();
+		this.tickStart();
+	}
+
+	protected tickStart (): void {
+		animate();
+		function animate () {
+			requestAnimationFrame( animate )
+			TWEEN.update()
+		}
 	}
 
 	protected createElements (): void {

@@ -1,3 +1,4 @@
+import * as TWEEN from '@tweenjs/tween.js';
 import { BaseSymbol } from 'src/components/reel/BaseSymbol';
 import { IReelStripConfig } from 'src/components/reel/ReelConfig';
 
@@ -18,12 +19,22 @@ export class ReelStrip extends PIXI.Container {
 	}
 
 	protected createSymbols (): void {
-		this.symbols = new Array<BaseSymbol>( this.config.symbolPerStrip );
-		for ( let i: number = 0; i < this.symbols.length; i++ ) {
+		const totalSymbolAmount: number = this.config.symbolPerStrip + this.config.symbolOnTop + this.config.symbolBelowBottom;
+		this.symbols = new Array<BaseSymbol>();
+		for ( let i: number = 0; i < totalSymbolAmount; i++ ) {
 			const symbol = new BaseSymbol( this.config.symbolConfig );
-			const posY: number = ( this.config.symbolConfig.width + this.config.stripInterval ) * i;
+			const posY: number = ( this.config.symbolConfig.width + this.config.stripInterval ) * ( i - this.config.symbolOnTop );
 			symbol.position.set( 0, posY );
 			this.addChild( symbol );
+			this.symbols.push( symbol );
 		}
+	}
+
+	public spinTween (): void {
+		this.symbols.forEach( symbol => {
+			new TWEEN.Tween( symbol )
+				.to( { y: symbol.y + this.config.reelTween.to.y }, this.config.reelTween.duration )
+				.start();
+		} );
 	}
 }

@@ -41,4 +41,10 @@ export class ReelView extends PIXI.Container {
 		}
 	}
 
+	public startSpin (): void {
+		this.reelStrips.forEach( strip => {
+			strip.spinTween();
+		} );
+	}
+
 }

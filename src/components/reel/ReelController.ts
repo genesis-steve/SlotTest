@@ -21,4 +21,8 @@ export class ReelController {
 		this.view = new ReelView( this.config );
 	}
 
+	protected startSpin (): void {
+		this.view.startSpin();
+	}
+
 }
