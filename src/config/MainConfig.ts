@@ -1,5 +1,5 @@
 export class MainConfig implements IMainConfig {
-	public title: string = 'Spine Test';
+	public title: string = 'Slot Test';
 	public width = 360;
 	public height = 640;
 	public backgroundColor = 0x000000;
