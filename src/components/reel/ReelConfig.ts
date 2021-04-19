@@ -16,12 +16,14 @@ export class ReelConfig implements IReelConfig {
 
 	public symbolWidthMax: number = this.reelSizeX / this.reelStripAmount;
 
+	protected stripInterval: number = ( this.reelSizeX - this.symbolConfig.width * this.reelStripAmount ) / ( this.reelStripAmount - 1 );
+
 	public reelStrip: IReelStripConfig = {
 		reelTween: {
-			to: { y: this.symbolConfig.width },
+			to: { y: this.symbolConfig.width + this.stripInterval },
 			duration: 200
 		},
-		stripInterval: ( this.reelSizeX - this.symbolConfig.width * this.reelStripAmount ) / ( this.reelStripAmount - 1 ),
+		stripInterval: this.stripInterval,
 		symbolConfig: this.symbolConfig,
 		symbolPerStrip: 3,
 		symbolOnTop: 1,

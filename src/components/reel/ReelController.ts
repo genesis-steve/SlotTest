@@ -8,12 +8,15 @@ export class ReelController {
 
 	protected view: ReelView;
 
+	protected isSpinning: boolean = false;
+
 	public get mainContainer () {
 		return this.view;
 	}
 
 	constructor () {
 		this.initElement();
+		this.addListers();
 	}
 
 	protected initElement (): void {
@@ -21,8 +24,19 @@ export class ReelController {
 		this.view = new ReelView( this.config );
 	}
 
-	protected startSpin (): void {
+	protected addListers (): void {
+		this.view.onAllReelStripTweenComplete.add( this.onReelTweenComplete, this );
+	}
+
+	public startSpin (): void {
+		this.isSpinning = true;
 		this.view.startSpin();
+	}
+
+	protected onReelTweenComplete (): void {
+		if ( this.isSpinning ) {
+			this.view.startSpin();
+		}
 	}
 
 }
