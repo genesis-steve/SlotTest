@@ -34,4 +34,8 @@ export class SpinView extends PIXI.Container {
 		this.onSpinButtonClickSignal.dispatch();
 	}
 
+	public onStopSpin (): void {
+		this.spinButton.interactive = true;
+	}
+
 }

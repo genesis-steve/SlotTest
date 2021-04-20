@@ -32,4 +32,8 @@ export class SpinController {
 		this.onSpinStartSignal.dispatch();
 	}
 
+	public onStopSpin (): void {
+		this.view.onStopSpin();
+	}
+
 }

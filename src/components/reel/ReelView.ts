@@ -12,6 +12,8 @@ export class ReelView extends PIXI.Container {
 	protected reelStripsContainer: PIXI.Container;
 	protected tweenReelStripCount: number = 0;
 
+	public onReelStopCompleteSignal: MiniSignal = new MiniSignal();
+
 	constructor ( config: IReelConfig ) {
 		super();
 		this.initElements( config );
@@ -38,10 +40,19 @@ export class ReelView extends PIXI.Container {
 			const reelStrip = new ReelStrip( this.config.reelStrip );
 			const posX: number = ( this.config.reelStrip.symbolConfig.width + this.config.reelStrip.stripIntervalX ) * i;
 			reelStrip.position.set( posX, 0 );
+			reelStrip.onStripTweenCompleteSignal.add( this.onTweenStripComplete, this );
 			this.reelStripsContainer.addChild( reelStrip );
 			this.reelStrips.push( reelStrip );
 		}
 	}
+
+	protected onTweenStripComplete (): void {
+		this.tweenReelStripCount--;
+		if ( this.tweenReelStripCount === 0 ) {
+			this.onReelStopCompleteSignal.dispatch();
+		}
+	}
+
 
 	public startSpin (): void {
 		this.tweenReelStripCount = this.reelStrips.length;
@@ -49,6 +60,14 @@ export class ReelView extends PIXI.Container {
 			window.setTimeout( () => {
 				strip.startSpin();
 			}, this.config.reelStrip.stripSpinStartDelay[ i ] );
+		} );
+	}
+
+	public stopSpin (): void {
+		this.reelStrips.forEach( ( strip, i ) => {
+			window.setTimeout( () => {
+				strip.stopSpin();
+			}, this.config.reelStrip.stripSpinStopDelay[ i ] );
 		} );
 	}
 

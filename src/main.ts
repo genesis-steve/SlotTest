@@ -61,11 +61,16 @@ export class GmaeApplication {
 	}
 
 	protected addListeners (): void {
+		this.reelContainer.onReelStopCompleteSignal.add( this.onReelStopComplete, this );
 		this.spinContainer.onSpinStartSignal.add( this.onSpinStart, this );
 	}
 
 	protected onSpinStart (): void {
 		this.reelContainer.startSpin();
+	}
+
+	protected onReelStopComplete (): void {
+		this.spinContainer.onStopSpin();
 	}
 
 }

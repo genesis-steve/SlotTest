@@ -7,19 +7,22 @@ export class ReelConfig implements IReelConfig {
 	protected reelBorderX: number = 30;
 
 	public position: IPoint = { x: this.reelBorderX, y: 120 };
-	public reelStripAmount: number = 5;
+	public reelStripAmount: number = 4;
 
 	protected reelSizeX: number = this.mainConfig.width - this.reelBorderX * 2;
 	protected stripIntervalX: number = 10;
-	protected stripIntervalY: number = 20;
+	protected stripIntervalY: number = 10;
 
 	protected symbolConfig: ISymbolConfig = {
 		width: ( this.reelSizeX - ( this.reelStripAmount - 1 ) * this.stripIntervalX ) / this.reelStripAmount
 	};
 
-	protected symbolPerStrip = 3;
+	protected symbolPerStrip = 4;
 
 	protected reelSizeY: number = ( this.symbolConfig.width + this.stripIntervalY ) * this.symbolPerStrip - this.stripIntervalY;
+
+	protected defaltStripSpinStartDelay: number = 200;
+	protected defaltStripSpinStopDelay: number = 200;
 
 
 	public reelStrip: IReelStripConfig = {
@@ -33,10 +36,29 @@ export class ReelConfig implements IReelConfig {
 		symbolPerStrip: this.symbolPerStrip,
 		symbolOnTop: 1,
 		symbolBelowBottom: 1,
-		stripSpinStartDelay: [ 0, 200, 400, 600, 800 ]
+		stripSpinStartDelay: this.getStripSpinStartDelay(),
+		stripSpinStopDelay: this.getStripSpinStopDelay()
 	};
 
 	public reelSize: IPoint = { x: this.reelSizeX, y: this.reelSizeY };
+
+	public reelStopTIme: number = 2000;
+
+	protected getStripSpinStartDelay (): Array<number> {
+		const delayArr: Array<number> = new Array<number>();
+		for ( let i: number = 0; i < this.reelStripAmount; i++ ) {
+			delayArr.push( this.defaltStripSpinStartDelay * i );
+		}
+		return delayArr;
+	}
+
+	protected getStripSpinStopDelay (): Array<number> {
+		const delayArr: Array<number> = new Array<number>();
+		for ( let i: number = 0; i < this.reelStripAmount; i++ ) {
+			delayArr.push( this.defaltStripSpinStopDelay * i );
+		}
+		return delayArr;
+	}
 }
 
 export interface IReelConfig {
@@ -44,6 +66,7 @@ export interface IReelConfig {
 	reelSize: IPoint;
 	reelStrip: IReelStripConfig;
 	reelStripAmount: number;
+	reelStopTIme: number;
 }
 
 export interface ISymbolConfig {
@@ -61,6 +84,7 @@ export interface IReelStripConfig {
 	symbolOnTop: number;
 	symbolBelowBottom: number;
 	stripSpinStartDelay: Array<number>
+	stripSpinStopDelay: Array<number>
 }
 
 export interface ITweenConfig {
