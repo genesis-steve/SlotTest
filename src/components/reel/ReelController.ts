@@ -8,8 +8,6 @@ export class ReelController {
 
 	protected view: ReelView;
 
-	protected isSpinning: boolean = false;
-
 	public get mainContainer () {
 		return this.view;
 	}
@@ -25,18 +23,15 @@ export class ReelController {
 	}
 
 	protected addListers (): void {
-		this.view.onAllReelStripTweenComplete.add( this.onReelTweenComplete, this );
+		//
 	}
 
 	public startSpin (): void {
-		this.isSpinning = true;
 		this.view.startSpin();
 	}
 
 	protected onReelTweenComplete (): void {
-		if ( this.isSpinning ) {
-			this.view.startSpin();
-		}
+		//
 	}
 
 }

@@ -11,7 +11,7 @@ export class ReelStrip extends PIXI.Container {
 
 	protected symbolTweenCount: number = 0;
 
-	public onAllSymbolTweenComplete: MiniSignal = new MiniSignal();
+	protected isSpinning: boolean = false;
 
 
 	constructor ( config: IReelStripConfig ) {
@@ -37,14 +37,17 @@ export class ReelStrip extends PIXI.Container {
 	}
 
 	public startSpin (): void {
+		this.isSpinning = true;
 		this.symbolTweenCount = this.symbols.length;
 		this.symbols.forEach( symbol => {
 			const toY: number = symbol.y + this.config.reelTween.to.y;
-			this.tweenSymbol( symbol, toY, this.config.reelTween.duration, () => {
-				if ( this.shouldMoveSymbolToTop( symbol ) ) {
-					symbol.y = -( this.config.symbolConfig.width + this.config.stripIntervalY );
-				}
-				this.onTweenSymbolComplete();
+			window.setTimeout( () => {
+				this.tweenSymbol( symbol, toY, this.config.reelTween.duration, () => {
+					if ( this.shouldMoveSymbolToTop( symbol ) ) {
+						symbol.y = -( this.config.symbolConfig.width + this.config.stripIntervalY );
+					}
+					this.onTweenSymbolComplete();
+				} );
 			} );
 		} );
 	}
@@ -52,18 +55,22 @@ export class ReelStrip extends PIXI.Container {
 	protected tweenSymbol ( symbol: BaseSymbol, toY: number, duration: number, onComplete?: Function ): void {
 		new TWEEN.Tween( symbol )
 			.to( { y: toY }, duration )
-			.start()
 			.onComplete( () => {
 				if ( onComplete ) {
 					onComplete();
 				}
-			} );
+			} )
+			.start();
 	}
 
 	protected onTweenSymbolComplete (): void {
 		this.symbolTweenCount--;
 		if ( this.symbolTweenCount === 0 ) {
-			this.onAllSymbolTweenComplete.dispatch();
+			if ( this.isSpinning ) {
+				this.startSpin();
+			} else {
+				//
+			}
 		}
 	}
 
