@@ -29,7 +29,7 @@ export class ReelStrip extends PIXI.Container {
 		this.symbols = new Array<BaseSymbol>();
 		for ( let i: number = 0; i < totalSymbolAmount; i++ ) {
 			const symbol = new BaseSymbol( this.config.symbolConfig );
-			const posY: number = ( this.config.symbolConfig.width + this.config.stripInterval ) * ( i - this.config.symbolOnTop );
+			const posY: number = ( this.config.symbolConfig.width + this.config.stripIntervalY ) * ( i - this.config.symbolOnTop );
 			symbol.position.set( 0, posY );
 			this.addChild( symbol );
 			this.symbols.push( symbol );
@@ -42,7 +42,7 @@ export class ReelStrip extends PIXI.Container {
 			const toY: number = symbol.y + this.config.reelTween.to.y;
 			this.tweenSymbol( symbol, toY, this.config.reelTween.duration, () => {
 				if ( this.shouldMoveSymbolToTop( symbol ) ) {
-					symbol.y = -( this.config.symbolConfig.width + this.config.stripInterval );
+					symbol.y = -( this.config.symbolConfig.width + this.config.stripIntervalY );
 				}
 				this.onTweenSymbolComplete();
 			} );
@@ -68,7 +68,7 @@ export class ReelStrip extends PIXI.Container {
 	}
 
 	protected shouldMoveSymbolToTop ( symbol: BaseSymbol ): boolean {
-		const positionY: number = ( this.config.symbolPerStrip + this.config.symbolOnTop ) * ( this.config.symbolConfig.width + this.config.stripInterval ) - this.config.stripInterval;
+		const positionY: number = ( this.config.symbolPerStrip + this.config.symbolOnTop ) * ( this.config.symbolConfig.width + this.config.stripIntervalY ) - this.config.stripIntervalY;
 		if ( symbol.position.y >= positionY ) {
 			return true;
 		}

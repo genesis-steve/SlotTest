@@ -37,7 +37,7 @@ export class ReelView extends PIXI.Container {
 		this.reelStrips = new Array<ReelStrip>();
 		for ( let i: number = 0; i < this.config.reelStripAmount; i++ ) {
 			const reelStrip = new ReelStrip( this.config.reelStrip );
-			const posX: number = ( this.config.reelStrip.symbolConfig.width + this.config.reelStrip.stripInterval ) * i;
+			const posX: number = ( this.config.reelStrip.symbolConfig.width + this.config.reelStrip.stripIntervalX ) * i;
 			reelStrip.position.set( posX, 0 );
 			reelStrip.onAllSymbolTweenComplete.add( this.onTweenStripComplete, this );
 			this.reelStripsContainer.addChild( reelStrip );

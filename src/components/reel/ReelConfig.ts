@@ -5,38 +5,37 @@ export class ReelConfig implements IReelConfig {
 
 	protected mainConfig: IMainConfig = new MainConfig();
 	protected reelBorderX: number = 30;
-	protected reelSizeX: number = this.mainConfig.width - this.reelBorderX * 2;
-	protected symbolConfig: ISymbolConfig = {
-		width: 70
-	};
 
 	public position: IPoint = { x: this.reelBorderX, y: 120 };
+	public reelStripAmount: number = 5;
 
-	public reelStripAmount: number = 4;
+	protected reelSizeX: number = this.mainConfig.width - this.reelBorderX * 2;
+	protected stripIntervalX: number = 10;
+	protected stripIntervalY: number = 20;
 
-	public symbolWidthMax: number = this.reelSizeX / this.reelStripAmount;
+	protected symbolConfig: ISymbolConfig = {
+		width: ( this.reelSizeX - ( this.reelStripAmount - 1 ) * this.stripIntervalX ) / this.reelStripAmount
+	};
 
-	protected stripInterval: number = ( this.reelSizeX - this.symbolConfig.width * this.reelStripAmount ) / ( this.reelStripAmount - 1 );
+	protected symbolPerStrip = 3;
+
+	protected reelSizeY: number = ( this.symbolConfig.width + this.stripIntervalY ) * this.symbolPerStrip - this.stripIntervalY;
+
 
 	public reelStrip: IReelStripConfig = {
 		reelTween: {
-			to: { y: this.symbolConfig.width + this.stripInterval },
-			duration: 200
+			to: { y: this.symbolConfig.width + this.stripIntervalY },
+			duration: 100
 		},
-		stripInterval: this.stripInterval,
+		stripIntervalX: this.stripIntervalX,
+		stripIntervalY: this.stripIntervalY,
 		symbolConfig: this.symbolConfig,
-		symbolPerStrip: 3,
+		symbolPerStrip: this.symbolPerStrip,
 		symbolOnTop: 1,
 		symbolBelowBottom: 1
 	};
 
-	public reelSize: IPoint = this.getReelSize();
-
-	protected getReelSize (): IPoint {
-		const width: number = this.reelSizeX;
-		const height: number = this.symbolConfig.width + ( this.symbolConfig.width + this.reelStrip.stripInterval ) * ( this.reelStrip.symbolPerStrip - 1 );
-		return { x: width, y: height };
-	}
+	public reelSize: IPoint = { x: this.reelSizeX, y: this.reelSizeY };
 }
 
 export interface IReelConfig {
@@ -44,7 +43,6 @@ export interface IReelConfig {
 	reelSize: IPoint;
 	reelStrip: IReelStripConfig;
 	reelStripAmount: number;
-	symbolWidthMax: number;
 }
 
 export interface ISymbolConfig {
@@ -55,7 +53,8 @@ export interface IReelStripConfig {
 	startTween?: ITweenConfig;
 	reelTween: ITweenConfig;
 	stopTween?: ITweenConfig;
-	stripInterval: number
+	stripIntervalX: number;
+	stripIntervalY: number;
 	symbolConfig: ISymbolConfig;
 	symbolPerStrip: number;
 	symbolOnTop: number;
