@@ -1,3 +1,4 @@
+import { IReelConfig, ReelConfig } from "src/components/reel/ReelConfig";
 import { IMainConfig, MainConfig } from "src/config/MainConfig";
 import { IStyle } from "src/utils/HTMLElementCreator";
 
@@ -5,9 +6,10 @@ import { IStyle } from "src/utils/HTMLElementCreator";
 export class SpinSettingsConfig implements ISpinSettingsConfig {
 
 	protected mainConfig: IMainConfig = new MainConfig();
+	protected reelConfig: IReelConfig = new ReelConfig();
 
 	public title: IStyle = {
-		id: 'singleAnimationDemoLabel',
+		id: 'spinSettingsTitle',
 		textContent: 'Spin Settings',
 		fontSize: 30,
 		fontWeight: 'bold',
@@ -87,7 +89,7 @@ export class SpinSettingsConfig implements ISpinSettingsConfig {
 		input: {
 			id: 'spinningDurationInput',
 			type: 'text',
-			value: '2000',
+			value: this.reelConfig.spinDuration.toString(),
 			fontSize: 15,
 			margin: '5 0',
 			width: 100

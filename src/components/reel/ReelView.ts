@@ -86,4 +86,11 @@ export class ReelView extends PIXI.Container {
 		} );
 	}
 
+	public updateReelView ( config: IReelConfig ): void {
+		this.config = config;
+		this.reelStripsContainer.destroy();
+		this.createReelStrips();
+	}
+
+
 }

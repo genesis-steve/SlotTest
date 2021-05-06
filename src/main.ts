@@ -8,6 +8,8 @@ import { ReelController } from 'src/components/reel/ReelController';
 import { SpinController } from 'src/components/spin/SpinController';
 import { SpinSettingsPanel } from 'src/components/external/spinSettings/SpinSettingsPanel';
 import { SpinSettingsConfig } from 'src/components/external/spinSettings/SpinSettingsConfig';
+import { ReelSettingsPanel } from 'src/components/external/reelSettings/ReelSettingsPanel';
+import { ReelSettingsConfig } from 'src/components/external/reelSettings/ReelSettingsConfig';
 
 window.onload = () => {
 	new GmaeApplication();
@@ -21,6 +23,7 @@ export class GmaeApplication {
 	protected reelContainer: ReelController;
 	protected spinContainer: SpinController;
 	protected spinSettingsPanel: SpinSettingsPanel;
+	protected reelSettingsPanel: ReelSettingsPanel;
 
 	protected pixi: PIXI.Application;
 	protected loader: PIXI.Loader;
@@ -84,6 +87,7 @@ export class GmaeApplication {
 
 	protected setupExternalPanel (): void {
 		this.createSpinSettingsPanel();
+		this.createReelSettingsPanel();
 	}
 
 	protected createSpinSettingsPanel (): void {
@@ -93,6 +97,12 @@ export class GmaeApplication {
 		this.spinSettingsPanel.setSpinDurationSignal.add( this.onSetSpinDuration, this );
 		this.spinSettingsPanel.setReelTweenDurationSignal.add( this.onSetReelTweenDuration, this );
 		this.mainContainer.appendChild( this.spinSettingsPanel.mainContainer );
+	}
+
+	protected createReelSettingsPanel (): void {
+		this.reelSettingsPanel = new ReelSettingsPanel( new ReelSettingsConfig() );
+		this.reelSettingsPanel.setStripAmountSignal.add( this.onSetStripAmount, this );
+		this.mainContainer.appendChild( this.reelSettingsPanel.mainContainer );
 	}
 
 	protected addListeners (): void {
@@ -122,6 +132,10 @@ export class GmaeApplication {
 
 	protected onSetReelTweenDuration ( time: number ): void {
 		this.reelContainer.setReelTweenDuration( time );
+	}
+
+	protected onSetStripAmount ( time: number ): void {
+		this.reelContainer.onSetStripAmount( time );
 	}
 
 	protected getAssetList (): Array<IAsset> {
