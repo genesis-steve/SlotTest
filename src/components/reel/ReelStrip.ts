@@ -13,6 +13,8 @@ export class ReelStrip extends PIXI.Container {
 
 	protected isSpinning: boolean = false;
 
+	protected reelTweenTime: number = 0;
+
 	public onStripTweenCompleteSignal: MiniSignal = new MiniSignal();
 
 
@@ -23,6 +25,7 @@ export class ReelStrip extends PIXI.Container {
 
 	protected initElements ( config: IReelStripConfig ): void {
 		this.config = config;
+		this.reelTweenTime = this.config.reelTween.duration;
 		this.createSymbols();
 	}
 
@@ -44,7 +47,7 @@ export class ReelStrip extends PIXI.Container {
 		this.symbols.forEach( symbol => {
 			const toY: number = symbol.y + this.config.reelTween.to.y;
 			window.setTimeout( () => {
-				this.tweenSymbol( symbol, toY, this.config.reelTween.duration, () => {
+				this.tweenSymbol( symbol, toY, this.reelTweenTime, () => {
 					if ( this.shouldMoveSymbolToTop( symbol ) ) {
 						symbol.y = -( this.config.symbolConfig.width + this.config.stripIntervalY );
 					}
@@ -56,6 +59,10 @@ export class ReelStrip extends PIXI.Container {
 
 	public stopSpin (): void {
 		this.isSpinning = false;
+	}
+
+	public setReelTweenDuration ( time: number ): void {
+		this.reelTweenTime = time;
 	}
 
 	protected tweenSymbol ( symbol: BaseSymbol, toY: number, duration: number, onComplete?: Function ): void {

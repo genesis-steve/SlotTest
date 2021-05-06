@@ -9,6 +9,8 @@ export class ReelController {
 
 	protected view: ReelView;
 
+	protected spinDuration: number;
+
 	public onReelStopCompleteSignal: MiniSignal = new MiniSignal();
 
 	public get mainContainer () {
@@ -22,6 +24,7 @@ export class ReelController {
 
 	protected initElement (): void {
 		this.config = new ReelConfig();
+		this.spinDuration = this.config.spinDuration;
 		this.view = new ReelView( this.config );
 	}
 
@@ -37,7 +40,23 @@ export class ReelController {
 		this.view.startSpin();
 		window.setTimeout( () => {
 			this.view.stopSpin();
-		}, this.config.reelStopTIme );
+		}, this.spinDuration );
+	}
+
+	public setSpinStartTime ( time: number ): void {
+		this.view.setSpinStartTime( time );
+	}
+
+	public setSpinStopTime ( time: number ): void {
+		this.view.setSpinStopTime( time );
+	}
+
+	public setSpinDuration ( time: number ): void {
+		this.spinDuration = time;
+	}
+
+	public setReelTweenDuration ( time: number ): void {
+		this.view.setReelTweenDuration( time );
 	}
 
 }

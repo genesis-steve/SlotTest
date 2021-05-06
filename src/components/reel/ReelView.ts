@@ -11,6 +11,8 @@ export class ReelView extends PIXI.Container {
 
 	protected reelStripsContainer: PIXI.Container;
 	protected tweenReelStripCount: number = 0;
+	protected stripSpinStartTime: number = 0;
+	protected stripSpinStopTime: number = 0;
 
 	public onReelStopCompleteSignal: MiniSignal = new MiniSignal();
 
@@ -53,13 +55,12 @@ export class ReelView extends PIXI.Container {
 		}
 	}
 
-
 	public startSpin (): void {
 		this.tweenReelStripCount = this.reelStrips.length;
 		this.reelStrips.forEach( ( strip, i ) => {
 			window.setTimeout( () => {
 				strip.startSpin();
-			}, this.config.reelStrip.stripSpinStartDelay[ i ] );
+			}, this.stripSpinStartTime * i );
 		} );
 	}
 
@@ -67,7 +68,21 @@ export class ReelView extends PIXI.Container {
 		this.reelStrips.forEach( ( strip, i ) => {
 			window.setTimeout( () => {
 				strip.stopSpin();
-			}, this.config.reelStrip.stripSpinStopDelay[ i ] );
+			}, this.stripSpinStopTime * i );
+		} );
+	}
+
+	public setSpinStartTime ( time: number ): void {
+		this.stripSpinStartTime = time;
+	}
+
+	public setSpinStopTime ( time: number ): void {
+		this.stripSpinStopTime = time;
+	}
+
+	public setReelTweenDuration ( time: number ): void {
+		this.reelStrips.forEach( ( strip, ) => {
+			strip.setReelTweenDuration( time );
 		} );
 	}
 

@@ -6,8 +6,8 @@ import { IMainConfig, MainConfig } from 'src/config/MainConfig';
 import { HTMLElementCreator, HTMLElementType } from 'src/utils/HTMLElementCreator';
 import { ReelController } from 'src/components/reel/ReelController';
 import { SpinController } from 'src/components/spin/SpinController';
-import { SpinSettingsPanel } from 'src/components/external/SpinSettingsPanel';
-import { SpinSettingsConfig } from 'src/components/external/SpinSettingsConfig';
+import { SpinSettingsPanel } from 'src/components/external/spinSettings/SpinSettingsPanel';
+import { SpinSettingsConfig } from 'src/components/external/spinSettings/SpinSettingsConfig';
 
 window.onload = () => {
 	new GmaeApplication();
@@ -20,9 +20,11 @@ export class GmaeApplication {
 	protected mainContainer: HTMLDivElement;
 	protected reelContainer: ReelController;
 	protected spinContainer: SpinController;
-	protected spinSettingsPanel: HTMLDivElement;
+	protected spinSettingsPanel: SpinSettingsPanel;
 
 	protected pixi: PIXI.Application;
+	protected loader: PIXI.Loader;
+	protected assets: Array<IAsset>;
 
 	constructor () {
 		this.appConfig = new MainConfig();
@@ -49,6 +51,22 @@ export class GmaeApplication {
 
 	protected setupPixiApplication (): void {
 		this.pixi = new PIXI.Application( this.appConfig );
+		this.loadAssets();
+	}
+
+	protected loadAssets (): void {
+		this.loader = new PIXI.Loader();
+		this.assets = this.getAssetList();
+		this.assets.forEach( asset => {
+			this.loader.add( asset.assetUrl );
+		} );
+		this.loader.onComplete.add( () => {
+			this.onCompleteUpload( this.loader.resources );
+		} );
+		this.loader.load();
+	}
+
+	protected onCompleteUpload ( res: PIXI.IResourceDictionary ): void {
 		this.createReel();
 		this.createSpinPanel();
 		this.addListeners();
@@ -69,8 +87,12 @@ export class GmaeApplication {
 	}
 
 	protected createSpinSettingsPanel (): void {
-		this.spinSettingsPanel = SpinSettingsPanel.init( new SpinSettingsConfig() );
-		this.mainContainer.appendChild( this.spinSettingsPanel );
+		this.spinSettingsPanel = new SpinSettingsPanel( new SpinSettingsConfig() );
+		this.spinSettingsPanel.setSpinStartTimeSignal.add( this.onSetSpinStartTime, this );
+		this.spinSettingsPanel.setSpinStopTimeSignal.add( this.onSetSpinStopTime, this );
+		this.spinSettingsPanel.setSpinDurationSignal.add( this.onSetSpinDuration, this );
+		this.spinSettingsPanel.setReelTweenDurationSignal.add( this.onSetReelTweenDuration, this );
+		this.mainContainer.appendChild( this.spinSettingsPanel.mainContainer );
 	}
 
 	protected addListeners (): void {
@@ -86,4 +108,40 @@ export class GmaeApplication {
 		this.spinContainer.onStopSpin();
 	}
 
+	protected onSetSpinStartTime ( time: number ): void {
+		this.reelContainer.setSpinStartTime( time );
+	}
+
+	protected onSetSpinStopTime ( time: number ): void {
+		this.reelContainer.setSpinStopTime( time );
+	}
+
+	protected onSetSpinDuration ( time: number ): void {
+		this.reelContainer.setSpinDuration( time );
+	}
+
+	protected onSetReelTweenDuration ( time: number ): void {
+		this.reelContainer.setReelTweenDuration( time );
+	}
+
+	protected getAssetList (): Array<IAsset> {
+		return [
+			{
+				assetKey: 'symbols',
+				assetUrl: 'assets/symbols.png'
+			}
+		];
+	}
+
+}
+
+export interface IAsset {
+	assetKey: string;
+	assetUrl: string;
+}
+
+export enum LoadExtension {
+	PNG = 'png',
+	ATLAS = 'altas',
+	JSON = 'json'
 }
