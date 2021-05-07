@@ -10,14 +10,14 @@ export class ReelConfig implements IReelConfig {
 	public reelStripAmount: number = 4;
 
 	protected reelSizeX: number = this.mainConfig.width - this.reelBorderX * 2;
-	protected stripIntervalX: number = 10;
-	protected stripIntervalY: number = 10;
+	public stripIntervalX: number = 10;
+	public stripIntervalY: number = 10;
 
 	protected symbolConfig: ISymbolConfig = {
 		width: ( this.reelSizeX - ( this.reelStripAmount - 1 ) * this.stripIntervalX ) / this.reelStripAmount
 	};
 
-	protected symbolPerStrip = 4;
+	public symbolPerStrip: number = 4;
 
 	protected reelSizeY: number = ( this.symbolConfig.width + this.stripIntervalY ) * this.symbolPerStrip - this.stripIntervalY;
 
@@ -40,6 +40,8 @@ export class ReelConfig implements IReelConfig {
 	public spinDuration: number = 2000;
 
 	public updateConfig (): void {
+		this.position = { x: this.reelBorderX, y: 120 };
+		this.reelSizeX = this.mainConfig.width - this.reelBorderX * 2;
 		this.symbolConfig = {
 			width: ( this.reelSizeX - ( this.reelStripAmount - 1 ) * this.stripIntervalX ) / this.reelStripAmount
 		};
@@ -47,10 +49,13 @@ export class ReelConfig implements IReelConfig {
 		this.reelStrip = {
 			...this.reelStrip,
 			reelTween: {
-				to: { y: this.symbolConfig.width + this.stripIntervalY },
-				duration: 100
+				...this.reelStrip.reelTween,
+				to: { y: this.symbolConfig.width + this.stripIntervalY }
 			},
-			symbolConfig: this.symbolConfig
+			stripIntervalX: this.stripIntervalX,
+			stripIntervalY: this.stripIntervalY,
+			symbolConfig: this.symbolConfig,
+			symbolPerStrip: this.symbolPerStrip
 		};
 		this.reelSize = { x: this.reelSizeX, y: this.reelSizeY };
 	}
@@ -59,8 +64,11 @@ export class ReelConfig implements IReelConfig {
 export interface IReelConfig {
 	position: IPoint;
 	reelSize: IPoint;
+	stripIntervalX: number;
+	stripIntervalY: number;
 	reelStrip: IReelStripConfig;
 	reelStripAmount: number;
+	symbolPerStrip: number;
 	spinDuration: number;
 	updateConfig (): void;
 }

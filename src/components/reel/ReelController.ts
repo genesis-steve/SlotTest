@@ -1,5 +1,5 @@
 import * as MiniSignal from 'mini-signals';
-import { IReelConfig, ReelConfig } from 'src/components/reel/ReelConfig';
+import { IPoint, IReelConfig, ReelConfig } from 'src/components/reel/ReelConfig';
 import { ReelView } from 'src/components/reel/ReelView';
 
 
@@ -61,6 +61,23 @@ export class ReelController {
 
 	public onSetStripAmount ( value: number ): void {
 		this.config.reelStripAmount = value;
+		this.config.updateConfig();
+		this.view.updateReelView( this.config );
+	}
+
+	public onSetSymbolAmount ( value: number ): void {
+		this.config.symbolPerStrip = value;
+		this.config.updateConfig();
+		this.view.updateReelView( this.config );
+	}
+
+	public onSetStripInterval ( position: IPoint ): void {
+		if ( position.x ) {
+			this.config.stripIntervalX = position.x;
+		}
+		if ( position.y ) {
+			this.config.stripIntervalY = position.y;
+		}
 		this.config.updateConfig();
 		this.view.updateReelView( this.config );
 	}

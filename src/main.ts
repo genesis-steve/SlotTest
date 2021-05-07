@@ -10,6 +10,7 @@ import { SpinSettingsPanel } from 'src/components/external/spinSettings/SpinSett
 import { SpinSettingsConfig } from 'src/components/external/spinSettings/SpinSettingsConfig';
 import { ReelSettingsPanel } from 'src/components/external/reelSettings/ReelSettingsPanel';
 import { ReelSettingsConfig } from 'src/components/external/reelSettings/ReelSettingsConfig';
+import { IPoint } from 'src/components/reel/ReelConfig';
 
 window.onload = () => {
 	new GmaeApplication();
@@ -102,6 +103,8 @@ export class GmaeApplication {
 	protected createReelSettingsPanel (): void {
 		this.reelSettingsPanel = new ReelSettingsPanel( new ReelSettingsConfig() );
 		this.reelSettingsPanel.setStripAmountSignal.add( this.onSetStripAmount, this );
+		this.reelSettingsPanel.setSymbolAmountSignal.add( this.onSetSymbolAmount, this );
+		this.reelSettingsPanel.setStripIntervalSignal.add( this.onSetStripInterval, this );
 		this.mainContainer.appendChild( this.reelSettingsPanel.mainContainer );
 	}
 
@@ -134,8 +137,16 @@ export class GmaeApplication {
 		this.reelContainer.setReelTweenDuration( time );
 	}
 
-	protected onSetStripAmount ( time: number ): void {
-		this.reelContainer.onSetStripAmount( time );
+	protected onSetStripAmount ( value: number ): void {
+		this.reelContainer.onSetStripAmount( value );
+	}
+
+	protected onSetSymbolAmount ( value: number ): void {
+		this.reelContainer.onSetSymbolAmount( value );
+	}
+
+	protected onSetStripInterval ( position: IPoint ): void {
+		this.reelContainer.onSetStripInterval( position );
 	}
 
 	protected getAssetList (): Array<IAsset> {

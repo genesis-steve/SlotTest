@@ -57,12 +57,84 @@ export class ReelSettingsConfig implements IReelSettingsConfig {
 			margin: '5 0 5 0'
 		}
 	};
+
+	public symbolAmountInput: IInputWithLabel = {
+		label: {
+			id: 'symbolAmountInputLabel',
+			textContent: 'Symbol amount : ',
+			fontSize: 15,
+			margin: '5 0'
+		},
+		input: {
+			id: 'symbolAmountInput',
+			type: 'text',
+			value: this.reelConfig.symbolPerStrip.toString(),
+			fontSize: 15,
+			margin: '5 0',
+			width: 100
+		},
+		button: {
+			id: 'symbolAmountInputButton',
+			textContent: 'Set',
+			fontSize: 15,
+			margin: '5 0 5 0'
+		}
+	};
+
+	public stripIntervalXInput: IInputWithLabel = {
+		label: {
+			id: 'stripIntervalXInputLabel',
+			textContent: 'Strip position x interval : ',
+			fontSize: 15,
+			margin: '5 0'
+		},
+		input: {
+			id: 'stripIntervalXInput',
+			type: 'text',
+			value: this.reelConfig.reelStrip.stripIntervalX.toString(),
+			fontSize: 15,
+			margin: '5 0',
+			width: 100
+		},
+		button: {
+			id: 'stripIntervalXInputButton',
+			textContent: 'Set',
+			fontSize: 15,
+			margin: '5 0 5 0'
+		}
+	};
+
+	public stripIntervalYInput: IInputWithLabel = {
+		label: {
+			id: 'stripIntervalYInputLabel',
+			textContent: 'Strip position y interval : ',
+			fontSize: 15,
+			margin: '5 0'
+		},
+		input: {
+			id: 'stripIntervalYInput',
+			type: 'text',
+			value: this.reelConfig.reelStrip.stripIntervalY.toString(),
+			fontSize: 15,
+			margin: '5 0',
+			width: 100
+		},
+		button: {
+			id: 'stripIntervalYInputButton',
+			textContent: 'Set',
+			fontSize: 15,
+			margin: '5 0 5 0'
+		}
+	};
 }
 
 export interface IReelSettingsConfig {
 	title: IStyle;
 	buttonContainer: IStyle;
 	stripAmountInput: IInputWithLabel;
+	symbolAmountInput: IInputWithLabel;
+	stripIntervalXInput: IInputWithLabel;
+	stripIntervalYInput: IInputWithLabel;
 }
 
 export interface IInputWithLabel {
