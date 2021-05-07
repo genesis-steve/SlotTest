@@ -59,6 +59,17 @@ export class ReelController {
 		this.view.setReelTweenDuration( time );
 	}
 
+	public onSetReelPosition ( position: IPoint ): void {
+		if ( position.x ) {
+			this.config.position.x = position.x;
+		}
+		if ( position.y ) {
+			this.config.position.y = position.y;
+		}
+		this.config.updateConfig();
+		this.view.updateReelView( this.config );
+	}
+
 	public onSetStripAmount ( value: number ): void {
 		this.config.reelStripAmount = value;
 		this.config.updateConfig();

@@ -107,7 +107,7 @@ export class GmaeApplication {
 	}
 
 	protected createBackgroundSettingsPanel (): void {
-		this.backgroundSettingsPanel = new BackgroundSettingsPanel( new BackgroundSettingsConfig(), this.pixi );
+		this.backgroundSettingsPanel = new BackgroundSettingsPanel( new BackgroundSettingsConfig() );
 		this.backgroundSettingsPanel.onPixiColorUpdateSignal.add( this.onPixiColorUpdate, this );
 		this.mainContainer.appendChild( this.backgroundSettingsPanel.mainContainer );
 	}
@@ -123,6 +123,7 @@ export class GmaeApplication {
 
 	protected createReelSettingsPanel (): void {
 		this.reelSettingsPanel = new ReelSettingsPanel( new ReelSettingsConfig() );
+		this.reelSettingsPanel.setReelPositionSignal.add( this.onSetReelPosition, this );
 		this.reelSettingsPanel.setStripAmountSignal.add( this.onSetStripAmount, this );
 		this.reelSettingsPanel.setSymbolAmountSignal.add( this.onSetSymbolAmount, this );
 		this.reelSettingsPanel.setStripIntervalSignal.add( this.onSetStripInterval, this );
@@ -161,6 +162,10 @@ export class GmaeApplication {
 
 	protected onSetReelTweenDuration ( time: number ): void {
 		this.reelContainer.setReelTweenDuration( time );
+	}
+
+	protected onSetReelPosition ( position: IPoint ): void {
+		this.reelContainer.onSetReelPosition( position );
 	}
 
 	protected onSetStripAmount ( value: number ): void {

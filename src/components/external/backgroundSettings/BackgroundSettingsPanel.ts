@@ -1,5 +1,4 @@
 import * as MiniSignal from 'mini-signals';
-import { Application } from 'pixi.js';
 import { IBackgroundSettingsConfig } from 'src/components/external/backgroundSettings/BackgroundSettingsConfig';
 import { AtlasParser } from 'src/utils/AtlasParser';
 import { HTMLElementCreator, HTMLElementType } from 'src/utils/HTMLElementCreator';
@@ -8,7 +7,6 @@ import { HTMLElementCreator, HTMLElementType } from 'src/utils/HTMLElementCreato
 export class BackgroundSettingsPanel {
 
 	protected config: IBackgroundSettingsConfig;
-	protected pixi: Application;
 
 	protected panelContainer: HTMLDivElement;
 
@@ -18,13 +16,12 @@ export class BackgroundSettingsPanel {
 		return this.panelContainer;
 	}
 
-	constructor ( config: IBackgroundSettingsConfig, pixi: Application ) {
-		this.init( config, pixi );
+	constructor ( config: IBackgroundSettingsConfig ) {
+		this.init( config );
 	}
 
-	public init ( config: IBackgroundSettingsConfig, pixi: Application ): HTMLDivElement {
+	public init ( config: IBackgroundSettingsConfig ): HTMLDivElement {
 		this.config = config;
-		this.pixi = pixi;
 		this.panelContainer = HTMLElementCreator.createHTMLElement(
 			HTMLElementType.DIV, config.buttonContainer
 		);

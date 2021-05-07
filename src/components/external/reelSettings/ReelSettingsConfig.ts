@@ -37,6 +37,52 @@ export class ReelSettingsConfig implements IReelSettingsConfig {
 		boxShadow: ElementColor.INBOX_SHADOW
 	};
 
+	public reelPositionXInput: IInputWithLabel = {
+		label: {
+			id: 'reelPositionXInputLabel',
+			textContent: 'Reel position x : ',
+			fontSize: 15,
+			margin: '5 0'
+		},
+		input: {
+			id: 'reelPositionXInput',
+			type: 'text',
+			value: this.reelConfig.position.x.toString(),
+			fontSize: 15,
+			margin: '5 0',
+			width: 100
+		},
+		button: {
+			id: 'reelPositionXInputButton',
+			textContent: 'Set',
+			fontSize: 15,
+			margin: '5 0 5 0'
+		}
+	};
+
+	public reelPositionYInput: IInputWithLabel = {
+		label: {
+			id: 'reelPositionYInputLabel',
+			textContent: 'Reel position y : ',
+			fontSize: 15,
+			margin: '5 0'
+		},
+		input: {
+			id: 'reelPositionYInput',
+			type: 'text',
+			value: this.reelConfig.position.y.toString(),
+			fontSize: 15,
+			margin: '5 0',
+			width: 100
+		},
+		button: {
+			id: 'reelPositionYInputButton',
+			textContent: 'Set',
+			fontSize: 15,
+			margin: '5 0 5 0'
+		}
+	};
+
 	public stripAmountInput: IInputWithLabel = {
 		label: {
 			id: 'stripAmountInputLabel',
@@ -133,6 +179,8 @@ export class ReelSettingsConfig implements IReelSettingsConfig {
 export interface IReelSettingsConfig {
 	title: IStyle;
 	buttonContainer: IStyle;
+	reelPositionXInput: IInputWithLabel;
+	reelPositionYInput: IInputWithLabel;
 	stripAmountInput: IInputWithLabel;
 	symbolAmountInput: IInputWithLabel;
 	stripIntervalXInput: IInputWithLabel;

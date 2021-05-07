@@ -7,6 +7,7 @@ export class ReelSettingsPanel {
 	protected config: IReelSettingsConfig;
 	protected panelContainer: HTMLDivElement;
 
+	public setReelPositionSignal: MiniSignal = new MiniSignal();
 	public setStripAmountSignal: MiniSignal = new MiniSignal();
 	public setSymbolAmountSignal: MiniSignal = new MiniSignal();
 	public setStripIntervalSignal: MiniSignal = new MiniSignal();
@@ -25,6 +26,8 @@ export class ReelSettingsPanel {
 			HTMLElementType.DIV, config.buttonContainer
 		);
 		this.createTitle();
+		this.createReelPositionXInput();
+		this.createReelPositionYInput();
 		this.createStripAmountInput();
 		this.createSymbolAmountInput();
 		this.createStripIntervalXInput();
@@ -37,6 +40,44 @@ export class ReelSettingsPanel {
 			HTMLElementType.P, this.config.title
 		);
 		this.panelContainer.appendChild( label );
+	}
+
+	protected createReelPositionXInput (): void {
+		const config: IInputWithLabel = this.config.reelPositionXInput;
+
+		const label: HTMLLabelElement = HTMLElementCreator.createHTMLElement<HTMLLabelElement>( HTMLElementType.LABEL, config.label );
+		this.panelContainer.appendChild( label );
+
+		const input: HTMLInputElement = HTMLElementCreator.createHTMLElement<HTMLInputElement>( HTMLElementType.INPUT, config.input );
+		this.panelContainer.appendChild( input );
+
+		const button: HTMLButtonElement = HTMLElementCreator.createHTMLElement<HTMLButtonElement>(
+			HTMLElementType.BUTTON, config.button
+		);
+		button.onclick = () => {
+			this.setReelPositionSignal.dispatch( { x: +( document.getElementById( config.input.id ) as HTMLInputElement ).value } );
+		};
+		this.panelContainer.appendChild( button )
+		this.panelContainer.appendChild( HTMLElementCreator.createHTMLElement<HTMLLabelElement>( HTMLElementType.BR ) );
+	}
+
+	protected createReelPositionYInput (): void {
+		const config: IInputWithLabel = this.config.reelPositionYInput;
+
+		const label: HTMLLabelElement = HTMLElementCreator.createHTMLElement<HTMLLabelElement>( HTMLElementType.LABEL, config.label );
+		this.panelContainer.appendChild( label );
+
+		const input: HTMLInputElement = HTMLElementCreator.createHTMLElement<HTMLInputElement>( HTMLElementType.INPUT, config.input );
+		this.panelContainer.appendChild( input );
+
+		const button: HTMLButtonElement = HTMLElementCreator.createHTMLElement<HTMLButtonElement>(
+			HTMLElementType.BUTTON, config.button
+		);
+		button.onclick = () => {
+			this.setReelPositionSignal.dispatch( { y: +( document.getElementById( config.input.id ) as HTMLInputElement ).value } );
+		};
+		this.panelContainer.appendChild( button )
+		this.panelContainer.appendChild( HTMLElementCreator.createHTMLElement<HTMLLabelElement>( HTMLElementType.BR ) );
 	}
 
 	protected createStripAmountInput (): void {
