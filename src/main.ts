@@ -11,6 +11,9 @@ import { SpinSettingsConfig } from 'src/components/external/spinSettings/SpinSet
 import { ReelSettingsPanel } from 'src/components/external/reelSettings/ReelSettingsPanel';
 import { ReelSettingsConfig } from 'src/components/external/reelSettings/ReelSettingsConfig';
 import { IPoint } from 'src/components/reel/ReelConfig';
+import { BackgroundSettingsPanel } from 'src/components/external/backgroundSettings/BackgroundSettingsPanel';
+import { BackgroundSettingsConfig } from 'src/components/external/backgroundSettings/BackgroundSettingsConfig';
+import { Texture } from 'pixi.js';
 
 window.onload = () => {
 	new GmaeApplication();
@@ -23,10 +26,13 @@ export class GmaeApplication {
 	protected mainContainer: HTMLDivElement;
 	protected reelContainer: ReelController;
 	protected spinContainer: SpinController;
+
+	protected backgroundSettingsPanel: BackgroundSettingsPanel;
 	protected spinSettingsPanel: SpinSettingsPanel;
 	protected reelSettingsPanel: ReelSettingsPanel;
 
 	protected pixi: PIXI.Application;
+	protected background: PIXI.Sprite;
 	protected loader: PIXI.Loader;
 	protected assets: Array<IAsset>;
 
@@ -71,9 +77,17 @@ export class GmaeApplication {
 	}
 
 	protected onCompleteUpload ( res: PIXI.IResourceDictionary ): void {
+		this.createBackground();
 		this.createReel();
 		this.createSpinPanel();
 		this.addListeners();
+	}
+
+	protected createBackground (): void {
+		this.background = new PIXI.Sprite();
+		this.background.width = this.appConfig.width;
+		this.background.height = this.appConfig.height;
+		this.pixi.stage.addChild( this.background );
 	}
 
 	protected createReel (): void {
@@ -87,8 +101,15 @@ export class GmaeApplication {
 	}
 
 	protected setupExternalPanel (): void {
+		this.createBackgroundSettingsPanel();
 		this.createSpinSettingsPanel();
 		this.createReelSettingsPanel();
+	}
+
+	protected createBackgroundSettingsPanel (): void {
+		this.backgroundSettingsPanel = new BackgroundSettingsPanel( new BackgroundSettingsConfig(), this.pixi );
+		this.backgroundSettingsPanel.onPixiColorUpdateSignal.add( this.onPixiColorUpdate, this );
+		this.mainContainer.appendChild( this.backgroundSettingsPanel.mainContainer );
 	}
 
 	protected createSpinSettingsPanel (): void {
@@ -111,6 +132,11 @@ export class GmaeApplication {
 	protected addListeners (): void {
 		this.reelContainer.onReelStopCompleteSignal.add( this.onReelStopComplete, this );
 		this.spinContainer.onSpinStartSignal.add( this.onSpinStart, this );
+	}
+
+	protected onPixiColorUpdate ( url: string ): void {
+		const texture = Texture.from( url );
+		this.background.texture = texture;
 	}
 
 	protected onSpinStart (): void {

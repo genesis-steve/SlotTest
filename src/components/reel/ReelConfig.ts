@@ -4,12 +4,11 @@ import { IMainConfig, MainConfig } from 'src/config/MainConfig';
 export class ReelConfig implements IReelConfig {
 
 	protected mainConfig: IMainConfig = new MainConfig();
-	protected reelBorderX: number = 30;
 
-	public position: IPoint = { x: this.reelBorderX, y: 120 };
+	public position: IPoint = { x: 30, y: 120 };
 	public reelStripAmount: number = 4;
 
-	protected reelSizeX: number = this.mainConfig.width - this.reelBorderX * 2;
+	protected reelSizeX: number = this.mainConfig.width - this.position.x * 2;
 	public stripIntervalX: number = 10;
 	public stripIntervalY: number = 10;
 
@@ -40,8 +39,7 @@ export class ReelConfig implements IReelConfig {
 	public spinDuration: number = 2000;
 
 	public updateConfig (): void {
-		this.position = { x: this.reelBorderX, y: 120 };
-		this.reelSizeX = this.mainConfig.width - this.reelBorderX * 2;
+		this.reelSizeX = this.mainConfig.width - this.position.x * 2;
 		this.symbolConfig = {
 			width: ( this.reelSizeX - ( this.reelStripAmount - 1 ) * this.stripIntervalX ) / this.reelStripAmount
 		};

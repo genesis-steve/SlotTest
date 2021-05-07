@@ -1,3 +1,4 @@
+import { BackgroundSettingsConfig, IBackgroundSettingsConfig } from "src/components/external/backgroundSettings/BackgroundSettingsConfig";
 import { IReelConfig, ReelConfig } from "src/components/reel/ReelConfig";
 import { IMainConfig, MainConfig } from "src/config/MainConfig";
 import { IStyle } from "src/utils/HTMLElementCreator";
@@ -6,6 +7,7 @@ import { IStyle } from "src/utils/HTMLElementCreator";
 export class SpinSettingsConfig implements ISpinSettingsConfig {
 
 	protected mainConfig: IMainConfig = new MainConfig();
+	protected backgroundSettingsConfig: IBackgroundSettingsConfig = new BackgroundSettingsConfig();
 	protected reelConfig: IReelConfig = new ReelConfig();
 
 	public title: IStyle = {
@@ -20,21 +22,24 @@ export class SpinSettingsConfig implements ISpinSettingsConfig {
 		margin: '10px 0px 0px 0px',
 		textAlign: 'center'
 	};
+
 	public buttonContainer: IStyle = {
 		id: 'singleAnimationDemo',
 		position: 'relative',
 		overflow: 'auto',
-		x: this.mainConfig.width,
-		y: -this.mainConfig.height,
+		x: this.mainConfig.width + this.backgroundSettingsConfig.buttonContainer.width,
+		y: -this.mainConfig.height - this.backgroundSettingsConfig.buttonContainer.height,
 		width: this.mainConfig.width,
 		height: this.mainConfig.height,
 		padding: '0 10',
 		boxShadow: ElementColor.INBOX_SHADOW
 	};
+
 	public animationButton: IStyle = {
 		fontSize: 15,
 		margin: '5 0'
 	};
+
 	public spinStartTimeInput: IInputWithLabel = {
 		label: {
 			id: 'spinStartTimeInputLabel',
@@ -57,6 +62,7 @@ export class SpinSettingsConfig implements ISpinSettingsConfig {
 			margin: '5 0 5 0'
 		}
 	};
+
 	public spinStopTimeInput: IInputWithLabel = {
 		label: {
 			id: 'spinStopTimeInputLabel',
@@ -79,6 +85,7 @@ export class SpinSettingsConfig implements ISpinSettingsConfig {
 			margin: '5 0 5 0'
 		}
 	};
+
 	public spinDurationInput: IInputWithLabel = {
 		label: {
 			id: 'spinningDurationInputLabel',
@@ -101,6 +108,7 @@ export class SpinSettingsConfig implements ISpinSettingsConfig {
 			margin: '5 0 5 0'
 		}
 	};
+
 	public reelTweenDurationInput: IInputWithLabel = {
 		label: {
 			id: 'reelTweenDurationInputLabel',

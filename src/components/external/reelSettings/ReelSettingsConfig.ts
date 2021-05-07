@@ -1,3 +1,4 @@
+import { BackgroundSettingsConfig, IBackgroundSettingsConfig } from "src/components/external/backgroundSettings/BackgroundSettingsConfig";
 import { ISpinSettingsConfig, SpinSettingsConfig } from "src/components/external/spinSettings/SpinSettingsConfig";
 import { IReelConfig, ReelConfig } from "src/components/reel/ReelConfig";
 import { IMainConfig, MainConfig } from "src/config/MainConfig";
@@ -7,6 +8,7 @@ import { IStyle } from "src/utils/HTMLElementCreator";
 export class ReelSettingsConfig implements IReelSettingsConfig {
 
 	protected mainConfig: IMainConfig = new MainConfig();
+	protected backgroundSettingsConfig: IBackgroundSettingsConfig = new BackgroundSettingsConfig();
 	protected spinSettingsConfig: ISpinSettingsConfig = new SpinSettingsConfig();
 	protected reelConfig: IReelConfig = new ReelConfig();
 
@@ -27,8 +29,8 @@ export class ReelSettingsConfig implements IReelSettingsConfig {
 		id: 'singleAnimationDemo',
 		position: 'relative',
 		overflow: 'auto',
-		x: this.mainConfig.width + this.spinSettingsConfig.buttonContainer.width + 20,
-		y: -this.mainConfig.height - this.spinSettingsConfig.buttonContainer.height,
+		x: this.mainConfig.width + this.backgroundSettingsConfig.buttonContainer.width + this.spinSettingsConfig.buttonContainer.width + 20,
+		y: -this.mainConfig.height - this.backgroundSettingsConfig.buttonContainer.height - this.spinSettingsConfig.buttonContainer.height,
 		width: this.mainConfig.width,
 		height: this.mainConfig.height,
 		padding: '0 10',
