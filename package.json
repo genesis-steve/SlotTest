@@ -5,7 +5,7 @@
 	"main": "src/main.ts",
 	"scripts": {
 		"start": "webpack-dev-server --open --config ./config/webpack.dev.ts",
-		"release-testing": "ts-node node_modules/webpack/bin/webpack.js --config ./config/webpack.common.ts --progress --profile --colors"
+		"release-testing": "ts-node node_modules/webpack/bin/webpack.js --config ./config/webpack.dev.ts --progress --profile --colors"
 	},
 	"repository": {
 		"type": "git",

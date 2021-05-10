@@ -31,7 +31,8 @@ export class ReelConfig implements IReelConfig {
 		symbolPerStrip: this.symbolPerStrip,
 		symbolOnTop: 1,
 		symbolBelowBottom: 1,
-		stripSpinStopDelay: 200
+		stripSpinStopDelay: 200,
+		rangeSymbols: [ 'PIC1', 'PIC2', 'PIC3', 'PIC4', 'J', 'Q', 'K', 'A', 'WILD', 'SCATTER' ]
 	};
 
 	public reelSize: IPoint = { x: this.reelSizeX, y: this.reelSizeY };
@@ -86,6 +87,7 @@ export interface IReelStripConfig {
 	symbolOnTop: number;
 	symbolBelowBottom: number;
 	stripSpinStopDelay: number;
+	rangeSymbols: Array<string>;
 }
 
 export interface ITweenConfig {

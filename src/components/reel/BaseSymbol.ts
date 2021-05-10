@@ -4,21 +4,20 @@ export class BaseSymbol extends PIXI.Container {
 
 	protected config: ISymbolConfig;
 
-	constructor ( config: ISymbolConfig ) {
+	constructor ( config: ISymbolConfig, symbolName: string ) {
 		super();
-		this.initElements( config );
+		this.initElements( config, symbolName );
 	}
 
-	protected initElements ( config: ISymbolConfig ): void {
+	protected initElements ( config: ISymbolConfig, symbolName: string ): void {
 		this.config = config;
-		this.setup();
+		this.setup( symbolName );
 	}
 
-	protected setup (): void {
-		const graphics = new PIXI.Graphics();
-		graphics.beginFill( 0xAAAAAA );
-		graphics.drawRect( 0, 0, this.config.width, this.config.width );
-		graphics.endFill();
-		this.addChild( graphics );
+	protected setup ( symbolName: string ): void {
+		const sprite = new PIXI.Sprite( PIXI.utils.TextureCache[ 'symbol_' + symbolName + '.png' ] );
+		sprite.width = this.config.width;
+		sprite.height = this.config.width;
+		this.addChild( sprite );
 	}
 }

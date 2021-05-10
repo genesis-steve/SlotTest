@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import * as TWEEN from '@tweenjs/tween.js';
 window.PIXI = PIXI;
 import './style.css';
+import { Inject } from 'typescript-ioc';
 import { IMainConfig, MainConfig } from 'src/config/MainConfig';
 import { HTMLElementCreator, HTMLElementType } from 'src/utils/HTMLElementCreator';
 import { ReelController } from 'src/components/reel/ReelController';
@@ -14,6 +15,7 @@ import { IPoint } from 'src/components/reel/ReelConfig';
 import { BackgroundSettingsPanel } from 'src/components/external/backgroundSettings/BackgroundSettingsPanel';
 import { BackgroundSettingsConfig } from 'src/components/external/backgroundSettings/BackgroundSettingsConfig';
 import { Texture } from 'pixi.js';
+import { AssetLoader } from 'src/core/AssetLoader';
 
 window.onload = () => {
 	new GmaeApplication();
@@ -22,6 +24,9 @@ window.onload = () => {
 export class GmaeApplication {
 
 	protected appConfig: IMainConfig;
+
+	@Inject
+	protected assetLoader: AssetLoader;
 
 	protected mainContainer: HTMLDivElement;
 	protected reelContainer: ReelController;
@@ -33,8 +38,6 @@ export class GmaeApplication {
 
 	protected pixi: PIXI.Application;
 	protected background: PIXI.Sprite;
-	protected loader: PIXI.Loader;
-	protected assets: Array<IAsset>;
 
 	constructor () {
 		this.appConfig = new MainConfig();
@@ -55,28 +58,16 @@ export class GmaeApplication {
 	protected createElements (): void {
 		this.mainContainer = <HTMLDivElement> document.getElementById( 'mainContainer' );
 		this.mainContainer.appendChild( HTMLElementCreator.createHTMLElement( HTMLElementType.BR ) );
+		this.assetLoader.onUploadCompleteSignal.add( this.onAssetLoadComplete, this );
+	}
+
+	protected onAssetLoadComplete (): void {
 		this.setupPixiApplication();
 		this.setupExternalPanel();
 	}
 
 	protected setupPixiApplication (): void {
 		this.pixi = new PIXI.Application( this.appConfig );
-		this.loadAssets();
-	}
-
-	protected loadAssets (): void {
-		this.loader = new PIXI.Loader();
-		this.assets = this.getAssetList();
-		this.assets.forEach( asset => {
-			this.loader.add( asset.assetUrl );
-		} );
-		this.loader.onComplete.add( () => {
-			this.onCompleteUpload( this.loader.resources );
-		} );
-		this.loader.load();
-	}
-
-	protected onCompleteUpload ( res: PIXI.IResourceDictionary ): void {
 		this.createBackground();
 		this.createReel();
 		this.createSpinPanel();
@@ -180,15 +171,6 @@ export class GmaeApplication {
 		this.reelContainer.onSetStripInterval( position );
 	}
 
-	protected getAssetList (): Array<IAsset> {
-		return [
-			{
-				assetKey: 'symbols',
-				assetUrl: 'assets/symbols.png'
-			}
-		];
-	}
-
 }
 
 export interface IAsset {
@@ -198,6 +180,5 @@ export interface IAsset {
 
 export enum LoadExtension {
 	PNG = 'png',
-	ATLAS = 'altas',
 	JSON = 'json'
 }

@@ -6,6 +6,7 @@ const appDir = Path.dirname( __dirname );
 module.exports = {
 	context: Path.join( __dirname, '../src' ),
 	entry: [ './main.ts' ],
+	mode: 'none',
 	module: {
 		rules: [
 			{
@@ -16,7 +17,23 @@ module.exports = {
 			{
 				test: /\.css$/i,
 				use: [ 'style-loader', 'css-loader' ],
-			}
+			},
+			{
+				test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+				loader: 'null-loader'
+			},
+			{
+				test: /\.json$/,
+				loader: 'json5-loader',
+				options: {
+					esModule: false,
+				},
+				type: 'javascript/auto'
+			},
+			{
+				test: /assets(\/|\\)/,
+				use: 'file-loader?name=assets/[hash].[ext]'
+			},
 		]
 	},
 	resolve: {
@@ -26,18 +43,19 @@ module.exports = {
 			Path.resolve( appDir, 'node_modules' )
 		],
 		alias: {
-			'src': Path.resolve( appDir, 'src/' )
+			'src': Path.resolve( appDir, 'src/' ),
+			'assets': Path.resolve( appDir, 'assets/' )
 		}
 	},
 	output: {
 		filename: 'bundle.js',
-		path: Path.resolve( __dirname, '../dist' ),
+		path: Path.resolve( appDir, '../dist' ),
 	},
 	target: 'web',
 
 	plugins: [
 		new HtmlPlugin( {
-			file: Path.join( __dirname, 'dist', 'index.html' ),
+			file: Path.join( appDir, 'dist', 'index.html' ),
 			template: './index.html'
 		} )
 	]

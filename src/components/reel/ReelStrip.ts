@@ -2,6 +2,7 @@ import * as TWEEN from '@tweenjs/tween.js';
 import * as MiniSignal from 'mini-signals';
 import { BaseSymbol } from 'src/components/reel/BaseSymbol';
 import { IReelStripConfig } from 'src/components/reel/ReelConfig';
+import { symbolName } from 'typescript';
 
 export class ReelStrip extends PIXI.Container {
 
@@ -33,7 +34,8 @@ export class ReelStrip extends PIXI.Container {
 		const totalSymbolAmount: number = this.config.symbolPerStrip + this.config.symbolOnTop + this.config.symbolBelowBottom;
 		this.symbols = new Array<BaseSymbol>();
 		for ( let i: number = 0; i < totalSymbolAmount; i++ ) {
-			const symbol = new BaseSymbol( this.config.symbolConfig );
+			const rangeSymbols: Array<string> = this.config.rangeSymbols;
+			const symbol = new BaseSymbol( this.config.symbolConfig, rangeSymbols[ Math.floor( Math.random() * rangeSymbols.length ) ] );
 			const posY: number = ( this.config.symbolConfig.width + this.config.stripIntervalY ) * ( i - this.config.symbolOnTop );
 			symbol.position.set( 0, posY );
 			this.addChild( symbol );

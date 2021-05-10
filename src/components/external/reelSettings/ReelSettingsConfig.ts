@@ -174,6 +174,52 @@ export class ReelSettingsConfig implements IReelSettingsConfig {
 			margin: '5 0 5 0'
 		}
 	};
+
+	public uploadSymbolImageInput: IInputWithLabel = {
+		label: {
+			id: 'uploadLabel_IMAGE',
+			htmlFor: 'uploadInput_IMAGE',
+			textContent: 'Upload PNG : ',
+			fontSize: 15,
+			margin: '20 0 5 0',
+			display: 'inline-block'
+		},
+		input: {
+			id: 'uploadInput_IMAGE',
+			type: 'file',
+			accept: '.png',
+			fontSize: 15
+		},
+		button: {
+			id: 'uploadConfirm_IMAGE',
+			textContent: 'Set',
+			fontSize: 15,
+			margin: '5 0 5 0'
+		}
+	};
+
+	public uploadSymbolJsonInput: IInputWithLabel = {
+		label: {
+			id: 'uploadLabel_JSON',
+			htmlFor: 'uploadInput_JSON',
+			textContent: 'Upload JSON : ',
+			fontSize: 15,
+			margin: '20 0 5 0',
+			display: 'inline-block'
+		},
+		input: {
+			id: 'uploadInput_JSON',
+			type: 'file',
+			accept: '.json',
+			fontSize: 15
+		},
+		button: {
+			id: 'uploadConfirm_JSON',
+			textContent: 'Set',
+			fontSize: 15,
+			margin: '5 0 5 0'
+		}
+	};
 }
 
 export interface IReelSettingsConfig {
@@ -185,6 +231,8 @@ export interface IReelSettingsConfig {
 	symbolAmountInput: IInputWithLabel;
 	stripIntervalXInput: IInputWithLabel;
 	stripIntervalYInput: IInputWithLabel;
+	uploadSymbolImageInput: IInputWithLabel;
+	uploadSymbolJsonInput: IInputWithLabel;
 }
 
 export interface IInputWithLabel {

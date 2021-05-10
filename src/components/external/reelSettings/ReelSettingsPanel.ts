@@ -1,5 +1,5 @@
 import * as MiniSignal from 'mini-signals';
-import { HTMLElementCreator, HTMLElementType } from 'src/utils/HTMLElementCreator';
+import { HTMLElementCreator, HTMLElementType, IStyle } from 'src/utils/HTMLElementCreator';
 import { IInputWithLabel, IReelSettingsConfig } from 'src/components/external/reelSettings/ReelSettingsConfig';
 
 export class ReelSettingsPanel {

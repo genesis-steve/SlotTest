@@ -1,5 +1,5 @@
 import * as MiniSignal from 'mini-signals';
-import { Graphics } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import { ISpinButton } from 'src/components/spin/SpinConfig';
 
 
@@ -16,17 +16,16 @@ export class SpinButton extends PIXI.Container {
 
 	protected initElement ( config: ISpinButton ): void {
 		this.config = config;
-		this.position.set( config.position.x, config.position.y );
 		this.createSpinSprite();
 		this.addListeners();
 	}
 
 	protected createSpinSprite (): void {
-		const buttonGraphics = new Graphics();
-		buttonGraphics.beginFill( this.config.color );
-		buttonGraphics.drawRect( -this.config.size.x / 2, -this.config.size.y / 2, this.config.size.x, this.config.size.y );
-		buttonGraphics.endFill();
-		this.addChild( buttonGraphics );
+		const buttonSprite = new Sprite( PIXI.utils.TextureCache[ 'spin_Enabled.png' ] );
+		buttonSprite.scale.set( this.config.scale.x, this.config.scale.y );
+		buttonSprite.position.set( this.config.position.x, this.config.position.y );
+		buttonSprite.anchor.set( 0.5, 0.5 );
+		this.addChild( buttonSprite );
 	}
 
 	protected addListeners (): void {
